@@ -27,7 +27,25 @@ exports.createTicket = async (req, res) => {
     }
 
     const ticket = await Ticket.create(ticketObject);
-    console.log(ticket);
+    /*
+     * Ticket is created now
+     * 1. We need to update customer and engineer document
+     */
+
+    //* Find out the customer and update
+    if (ticket) {
+      const user = await User.findOne({
+        userID: req.userID,
+      });
+      user.ticketsCreated.push(ticket._id);
+      await user.save();
+
+      /*
+       * Update the engineer
+       */
+      engineer.ticketsAssigned.push(ticket._id);
+      await engineer.save();
+    }
     return res.status(201).send(ObjectConverter.ticketResponse(ticket));
   } catch (err) {
     console.log(err.message);
