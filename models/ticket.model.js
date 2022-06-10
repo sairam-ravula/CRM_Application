@@ -1,0 +1,46 @@
+/*
+* This file provides the resource for the ticket
+*/
+
+const mongoose = require('mongoose');
+const constants = require('../utils/constants');
+
+const ticketSchema = new mongoose.Schema({
+    title : {
+        type: String,
+        required: true
+    },
+    description : {
+        type: String,
+        required: true
+    },
+    ticketPriority : {
+        type: Number,
+        required: true,
+        default: constants.ticketPriority.four // Possible values = 1/2/3/4
+    },
+    ticketStatus : {
+        type: String,
+        required: true,
+        default: constants.ticketStatus.open // OPEN/CLOSED/BLOCKED
+    },
+    reporter : {
+        type: String
+    },
+    assignee : {
+        type: String
+    },
+    createdAt : {
+        type: Date,
+        immutable: true,
+        default : () => {
+            return Date.now();
+        }
+    },
+    updatedAt : {
+        type: Date,
+        default: () => {
+            return Date.now();
+        }
+    }
+})
