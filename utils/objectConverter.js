@@ -30,3 +30,20 @@ exports.ticketResponse = (ticket) => {
     updatedAt: ticket.updatedAt,
   };
 };
+exports.ticketListResponse = (tickets) => {
+  const ticketResult = [];
+  tickets.forEach((ticket) => {
+    ticketResult.push({
+      title: ticket.title,
+      description: ticket.description,
+      ticketPriority: ticket.ticketPriority,
+      status: ticket.status,
+      reporter: ticket.reporter,
+      assignee: ticket.assignee,
+      id: ticket._id,
+      createdAt: ticket.createdAt,
+      updatedAt: ticket.updatedAt,
+    });
+  });
+  return ticketResult;
+};

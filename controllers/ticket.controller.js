@@ -46,6 +46,7 @@ exports.createTicket = async (req, res) => {
       engineer.ticketsAssigned.push(ticket._id);
       await engineer.save();
     }
+    ticketObject.reporter = user.userID;
     return res.status(201).send(ObjectConverter.ticketResponse(ticket));
   } catch (err) {
     console.log(err.message);
@@ -53,4 +54,34 @@ exports.createTicket = async (req, res) => {
       message: "Some internal error",
     });
   }
+};
+
+/*
+ * API to fetch all tickets
+ */
+
+exports.getAllTickets = async (req, res) => {
+  const user = await User.findOne({ userID: req.userID });
+  if (user.ticketsCreated == null || user.ticketsCreated.length == 0) {
+    return res.status(200).send({
+      message: "You haven't created any tickets!!!",
+    });
+  }
+  /*
+   *I need to get all the ticket IDs
+   */
+  // * const ticketList = [];
+  // * user.ticketsCreated.forEach(async (t) => {
+  // *   ticketList.push(await Ticket.findOne({ _id: t }));
+  // * });
+  // * const queryObj = { reporter: req.userID };
+  // * const allTickets = await Ticket.find(queryObj);
+
+  // * res.status(200).send(ObjectConverter.ticketListResponse(ticketList));
+  const ticketList = await Ticket.find({
+    _id: {
+      $in: user.ticketsCreated,
+    },
+  });
+  res.status(200).send(ObjectConverter.ticketListResponse(ticketList));
 };

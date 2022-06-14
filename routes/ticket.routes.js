@@ -7,4 +7,9 @@ module.exports = (app) => {
     [authJwt.verifyToken],
     ticketController.createTicket
   );
+  app.get(
+    "/crm/api/v1/tickets",
+    [authJwt.verifyToken],
+    ticketController.getAllTickets
+  );
 };
