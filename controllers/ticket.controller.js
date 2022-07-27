@@ -58,6 +58,12 @@ exports.createTicket = async (req, res) => {
 
 /*
  * API to fetch all tickets
+
+ * Allow the user to filter based on state
+
+ * Extension:
+ * Using query params, Allow the user to filter the tickets
+ * based on status 
  */
 
 exports.getAllTickets = async (req, res) => {
@@ -78,6 +84,7 @@ exports.getAllTickets = async (req, res) => {
   // * const allTickets = await Ticket.find(queryObj);
 
   // * res.status(200).send(ObjectConverter.ticketListResponse(ticketList));
+
   const ticketList = await Ticket.find({
     _id: {
       $in: user.ticketsCreated,
